@@ -7,7 +7,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 
 //Conection DB
-// const { dbConection } = require('./database/config');
+const { dbConection } = require('./database/config');
 
 // Crear el servidor express
 const app = express();
@@ -22,12 +22,14 @@ app.use(express.urlencoded({ limit: '50mb', extended: true, parameterLimit: 5000
 
 
 // DataBase
-// dbConection();
+dbConection();
 
 // DIRECTORIO PUBLICO
 app.use(express.static('public'));
 
 // RUTAS
+app.use('/api/login', require('./router/auth.route'));
+app.use('/api/worker', require('./router/worker.route'));
 
 // SPA
 app.get('*', (req, res) => {
