@@ -14,7 +14,7 @@ const { googleSignIn, renewWorkerJWT, login } = require('../controller/auth.cont
 const router = Router();
 
 /** =====================================================================
- *  LOGIN - GOOGLE
+ *  LOGIN - GOOGLEe
 =========================================================================*/
 router.post('/', [
         check('email', 'El email es obligatorio').not().isEmpty(),
