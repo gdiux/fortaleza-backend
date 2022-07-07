@@ -31,6 +31,8 @@ app.use(express.static('public'));
 app.use('/api/login', require('./router/auth.route'));
 app.use('/api/worker', require('./router/worker.route'));
 
+app.use('/api/uploads', require('./router/uploads.route'));
+
 // SPA
 app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'public/index.html'));
