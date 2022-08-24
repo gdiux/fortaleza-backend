@@ -13,7 +13,7 @@ const robots = require('express-robots-txt');
 const { dbConection } = require('./database/config');
 
 
-// Crear el servidor express
+// Crear el servidor express...
 const app = express();
 
 // COMPRESS
