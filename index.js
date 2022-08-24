@@ -30,8 +30,6 @@ app.use(express.urlencoded({ limit: '50mb', extended: true, parameterLimit: 5000
 // ROBOT TXT
 app.use(robots({
     UserAgent: '*',
-    Disallow: '/',
-    CrawlDelay: '5',
     Sitemap: 'https://grupofortalezasas.com/assets/sitemap.xml',
 }));
 
