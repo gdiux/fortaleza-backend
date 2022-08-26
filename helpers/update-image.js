@@ -24,7 +24,7 @@ const deleteImage = (path) => {
 /** =====================================================================
  *  UPDATE IMAGE 
 =========================================================================*/
-const updateImage = async(tipo, id, nameFile, uid, desc) => {
+const updateImage = async(tipo, id, nameFile) => {
 
     let pathOld = '';
 
@@ -43,12 +43,12 @@ const updateImage = async(tipo, id, nameFile, uid, desc) => {
             deleteImage(pathOld);
 
             // SAVE IMAGE
-            user.img = nameFile;
-            await user.save();
-            return true;
+            worker.img = nameFile;
+            await worker.save();
+            return worker;
 
             break;
-        case 'archivos':
+        case 'archivoss':
 
             // SEARCH USER BY ID
             const workerDb = await Worker.findById(id);

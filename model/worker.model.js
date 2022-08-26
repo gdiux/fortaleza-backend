@@ -4,8 +4,36 @@ const Attachments = Schema({
     attachment: {
         type: String
     },
+    type: {
+        type: String
+    },
+    desc: {
+        type: String
+    },
+    status: {
+        type: Boolean,
+        default: true
+    },
+    approved: {
+        type: Boolean,
+        default: false
+    },
     fecha: {
-        type: Date
+        type: Date,
+        default: Date.now
+    }
+});
+
+const Skills = Schema({
+    name: {
+        type: String
+    },
+    years: {
+        type: Number
+    },
+    fecha: {
+        type: Date,
+        default: Date.now
     }
 });
 
@@ -53,7 +81,13 @@ const WorkerSchema = Schema({
     img: {
         type: String
     },
+    description: {
+        type: String
+    },
+
     attachments: [Attachments],
+
+    skills: [Skills],
     type: {
         type: String,
         default: 'Aspirante'

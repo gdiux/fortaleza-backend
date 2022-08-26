@@ -10,18 +10,26 @@ const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT, validarWorkerJWT } = require('../middlewares/validar-jwt');
 
 // CONTROLLERS
-const { fileUpload, getImages } = require('../controller/uploads.controller');
+const { fileUpload, getImages, uploadFiles, deleteFile } = require('../controller/uploads.controller');
 
 const router = Router();
 
 router.use(expressFileUpload());
 
 /** =====================================================================
- *  UPLOADS
+ *  UPLOADS IMG
 =========================================================================*/
-router.put('/:tipo/:id', validarWorkerJWT, fileUpload);
+router.put('/:tipo', validarWorkerJWT, fileUpload);
 /** =====================================================================
- *  UPLOADS
+ *  UPLOADS IMG
+=========================================================================*/
+
+/** =====================================================================
+ *  UPLOADS FILES
+=========================================================================*/
+router.put('/files/:type/:desc', validarWorkerJWT, uploadFiles);
+/** =====================================================================
+ *  UPLOADS FILES
 =========================================================================*/
 
 /** =====================================================================
@@ -34,7 +42,7 @@ router.get('/:tipo/:image', getImages);
 /** =====================================================================
  *  DELETE IMAGES
 =========================================================================*/
-// router.delete('/delete/:type/:id/:desc/:img', validarJWT, deleteImg);
+router.delete('/delete/:attachment', validarWorkerJWT, deleteFile);
 /** =====================================================================
  *  DELETE IMAGES
 =========================================================================*/

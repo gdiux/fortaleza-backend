@@ -3,7 +3,6 @@ const bcrypt = require('bcryptjs');
 
 const Worker = require('../model/worker.model');
 
-
 /** ======================================================================
  *  POST WORKER
 =========================================================================*/
@@ -26,6 +25,7 @@ const createWorker = async(req, res = response) => {
         // ENCRYPTAR PASSWORD
         const salt = bcrypt.genSaltSync();
         worker.password = bcrypt.hashSync(password, salt);
+
 
         // SAVE WORKER
         await worker.save();
@@ -95,9 +95,48 @@ const updateWorker = async(req, res = response) => {
 
 };
 
+/** ======================================================================
+ *  DELETE EXP WORKER
+=========================================================================*/
+const deleteExpWorker = async(req, res = response) => {
+
+    try {
+
+        const wid = req.wid;
+        const _id = req.params.id;
+
+        const expDel = await Worker.updateOne({ _id: wid }, { $pull: { skills: { _id } } });
+
+        // VERIFICAR SI SE ACTUALIZO
+        if (expDel.nModified === 0) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'No se pudo eliminar la habilidad o experiencia, porfavor intente de nuevo'
+            });
+        }
+
+        // DEVOLVER LOS ARCHIVOS
+        const worker = await Worker.findById(wid);
+
+        res.json({
+            ok: true,
+            worker
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            ok: false,
+            msg: 'Error inesperado, porfavor intente nuevamente'
+        });
+    }
+
+};
+
 
 // EXPORTS
 module.exports = {
     createWorker,
-    updateWorker
+    updateWorker,
+    deleteExpWorker
 }
