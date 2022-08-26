@@ -269,7 +269,7 @@ const deleteFile = async(req, res = response) => {
 
         const fileDel = await Worker.updateOne({ _id: wid }, { $pull: { attachments: { attachment } } });
 
-        // VERIFICAR SI SE ACTUALIZO
+        // VERIFICAR SI SE ACTUALIZO..
         if (fileDel.nModified === 0) {
             return res.status(400).json({
                 ok: false,
