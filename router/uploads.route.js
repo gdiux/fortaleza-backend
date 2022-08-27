@@ -27,7 +27,7 @@ router.put('/:tipo', validarWorkerJWT, fileUpload);
 /** =====================================================================
  *  UPLOADS FILES
 =========================================================================*/
-router.put('/files/:type/:desc', validarWorkerJWT, uploadFiles);
+router.put('/files/:type/:desc/:wid', validarWorkerJWT, uploadFiles);
 /** =====================================================================
  *  UPLOADS FILES
 =========================================================================*/
@@ -40,11 +40,11 @@ router.get('/:tipo/:image', getImages);
  *  GET IMAGES
 =========================================================================*/
 /** =====================================================================
- *  DELETE IMAGES
+ *  DELETE FILES
 =========================================================================*/
-router.delete('/delete/:attachment', validarWorkerJWT, deleteFile);
+router.delete('/delete/:attachment/:wid', validarWorkerJWT, deleteFile);
 /** =====================================================================
- *  DELETE IMAGES
+ *  DELETE FILES
 =========================================================================*/
 
 // EXPORT

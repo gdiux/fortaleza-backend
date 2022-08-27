@@ -23,7 +23,7 @@ const uploadFiles = async(req, res = response) => {
 
         const type = req.params.type;
         const desc = req.params.desc;
-        const wid = req.wid;
+        const wid = req.params.wid;
         const file = req.files.image;
 
         // VALIDAR ARCHIVOS
@@ -265,7 +265,7 @@ const deleteFile = async(req, res = response) => {
     try {
 
         const attachment = req.params.attachment;
-        const wid = req.wid;
+        const wid = req.params.wid;
 
         const fileDel = await Worker.updateOne({ _id: wid }, { $pull: { attachments: { attachment } } });
 
