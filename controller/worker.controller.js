@@ -22,6 +22,8 @@ const createWorker = async(req, res = response) => {
 
         const worker = new Worker(req.body);
 
+        worker.email = worker.email.toLowerCase();
+
         // ENCRYPTAR PASSWORD
         const salt = bcrypt.genSaltSync();
         worker.password = bcrypt.hashSync(password, salt);
