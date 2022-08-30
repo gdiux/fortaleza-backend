@@ -9,7 +9,7 @@ const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT, validarWorkerJWT } = require('../middlewares/validar-jwt');
 
 // CONTROLLERS
-const { googleSignIn, renewWorkerJWT, login } = require('../controller/auth.controller');
+const { googleSignIn, renewWorkerJWT, login, rePass } = require('../controller/auth.controller');
 
 const router = Router();
 
@@ -25,6 +25,19 @@ router.post('/', [
 );
 /** =====================================================================
 *  LOGIN - GOOGLE
+=========================================================================*/
+
+/** =====================================================================
+ *  RECUPERAR CONTRASEÑA
+=========================================================================*/
+router.post('/recuperar/password', [
+        check('email', 'El email es obligatorio').not().isEmpty(),
+        validarCampos
+    ],
+    rePass
+);
+/** =====================================================================
+*  RECUPERAR CONTRASEÑA
 =========================================================================*/
 
 /** =====================================================================
