@@ -6,7 +6,9 @@ const Worker = require('../model/worker.model');
 const { generarJWT, generarWorkerJWT } = require('../helpers/jwt');
 const { googleVerify } = require('../helpers/google-verify');
 
-const nodeMailer = require('nodemailer');
+const nodemailer = require('nodemailer');
+const smtpTransport = require('nodemailer-smtp-transport');
+
 
 /** =====================================================================
  *  REEBOOT PASSWORD
@@ -29,85 +31,89 @@ const rePass = async(req, res = response) => {
         // VALIDATE USER
 
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let result = Math.random().toString(36).substring(0, 10);
+        let result = Math.random().toString(36).replace(/[.!"#$%&/()=]+/g, '');
 
         const salt = bcrypt.genSaltSync();
         workerDB.password = bcrypt.hashSync(result, salt);
 
-        console.log(result);
+        // ========================= NODEMAILER =================================
 
-        let config = nodeMailer.createTransport({
-            'host': 'smtp.gmail.com',
-            'port': 465,
-            'secure': false,
-            'auth': {
-                'user': 'ivsmca90@gmail.com',
-                'pass': '19576943gacp'
+        const transporter = nodemailer.createTransport({
+            host: "smtp.office365.com", // hostname
+            port: 587, // port for secure SMTP
+            secureConnection: false,
+            tls: {
+                ciphers: 'SSLv3'
+            },
+            auth: {
+                user: 'gacp_88@hotmail.com',
+                pass: '19776943gacp'
             }
         });
 
-        const opciones = {
-            from: 'Recuperar Contraseña Fortaleza Temp Job Plus Est SAS ',
-            subject: 'Recuperar contraseña',
-            to: email,
-            text: `<div style="box-sizing:border-box;margin:0;font-family: Montserrat,-apple-system,BlinkMacSystemFont;font-size:1rem;font-weight:400;line-height:1.5;text-align:left;background-color:#fff;color:#333">
-                        <div class="adM">
+        const mailOptions = {
+            from: '"Grupo Fortaleza" <gacp_88@hotmail.com>', // sender address (who sends)
+            to: email, // list of receivers (who receives)
+            subject: 'Recuperar contraseña ', // Subject line
+            text: 'Hello world ', // plaintext body
+            html: `<div style="box-sizing:border-box;margin:0;font-family: Montserrat,-apple-system,BlinkMacSystemFont;font-size:1rem;font-weight:400;line-height:1.5;text-align:left;background-color:#fff;color:#333">
+            <div class="adM">
+            </div>
+            <div style="box-sizing:border-box;width:100%;padding-right:15px;padding-left:15px;margin-right:auto;margin-left:auto;max-width:620px">
+                <div class="adM">
+                </div>
+                <div style="box-sizing:border-box;display:-webkit-box;display:-ms-flexbox;display:flex">
+                    <div class="adM">
+                    </div>
+                    <div style="box-sizing:border-box;width:100%;min-height:1px;padding-right:15px;padding-left:15px;text-align:center;padding-top:20px">
+
+                    </div>
+                </div>
+                <div style="box-sizing:border-box;display:-webkit-box;display:-ms-flexbox;display:flex">
+                    <div style="box-sizing:border-box;width:100%;min-height:1px;padding-right:15px;padding-left:15px;margin-top:40px;padding:20px 0;background-color:#2d2d2d;color:#fff">
+                        <h2 style="box-sizing:border-box;margin-top:0;margin-bottom:.5rem;font-family:inherit;font-weight:500;line-height:1.2;color:inherit;font-size:2rem;text-align:center!important">Recuperar Contraseña</h2>
+                    </div>
+                </div>
+                <div style="box-sizing:border-box;display:-webkit-box;display:-ms-flexbox;display:flex">
+                    <div style="box-sizing:border-box;width:100%;min-height:1px;padding-right:15px;padding-left:15px;text-align:center">
+                        <h3 style="text-transform: capitalize; box-sizing:border-box;margin-top:0;margin-bottom:.5rem;font-family:inherit;font-weight:500;line-height:1.2;color:inherit;font-size:2rem;margin:20px 0">Hola ${workerDB.name}</h3>
+                        <h5 style="box-sizing:border-box;margin-top:0;margin-bottom:.5rem;font-family:inherit;font-weight:500;line-height:1.2;color:inherit;font-size:1.25rem;margin:20px 0">Hemos recibido su solicitud de recuperación de contraseña.</h5>
+                        <div style="box-sizing:border-box;display:-webkit-box;display:-ms-flexbox;display:flex">
+                            <div style="box-sizing:border-box;width:100%;min-height:1px;padding-right:15px;padding-left:15px;text-align:center">
+                            </div>
                         </div>
-                        <div style="box-sizing:border-box;width:100%;padding-right:15px;padding-left:15px;margin-right:auto;margin-left:auto;max-width:620px">
-                            <div class="adM">
-                            </div>
-                            <div style="box-sizing:border-box;display:-webkit-box;display:-ms-flexbox;display:flex">
-                                <div class="adM">
-                                </div>
-                                <div style="box-sizing:border-box;width:100%;min-height:1px;padding-right:15px;padding-left:15px;text-align:center;padding-top:20px">
+                        <p style="box-sizing:border-box;margin-top:0;margin-bottom:1rem">Tu nueva contraseña es: ${result}</p>
+                        <a href="https://grupofortalezasas.com/portal/trabajadores" style="box-sizing:border-box;text-decoration:none;display:inline-block;font-weight:400;text-align:center;white-space:nowrap;vertical-align:middle;border:1px solid transparent;color:#fff;line-height:1.5;margin:10px;border-radius:30px;background-color:#009BE0;border-color:#009BE0;font-size:0.95rem;padding:15px 20px"
+                            target="_blank">Inciar sesion ahora</a>
+                        <p style="box-sizing:border-box;margin-top:0;margin-bottom:1rem">tambien puedes copiar este enlace en tu URL</p>
+                        <p> https://grupofortalezasas.com/portal/trabajadores</p>
+                    </div>
+                </div>
+                <div style="box-sizing:border-box;display:-webkit-box;display:-ms-flexbox;display:flex">
+                    <div style="box-sizing:border-box;width:100%;min-height:1px;padding-right:15px;padding-left:15px;margin:40px 0;text-align:center">
+                        <p style="box-sizing:border-box;margin-top:0;margin-bottom:1rem">Si esta solicitud se ha enviado sin su consentimiento, puede ignorar este correo electrónico ó eliminarlo. </p>
+                    </div>
+                </div>
 
-                                </div>
-                            </div>
-                            <div style="box-sizing:border-box;display:-webkit-box;display:-ms-flexbox;display:flex">
-                                <div style="box-sizing:border-box;width:100%;min-height:1px;padding-right:15px;padding-left:15px;margin-top:40px;padding:20px 0;background-color:#2d2d2d;color:#fff">
-                                    <h2 style="box-sizing:border-box;margin-top:0;margin-bottom:.5rem;font-family:inherit;font-weight:500;line-height:1.2;color:inherit;font-size:2rem;text-align:center!important">Recuperar Contraseña</h2>
-                                </div>
-                            </div>
-                            <div style="box-sizing:border-box;display:-webkit-box;display:-ms-flexbox;display:flex">
-                                <div style="box-sizing:border-box;width:100%;min-height:1px;padding-right:15px;padding-left:15px;text-align:center">
-                                    <h3 style="text-transform: capitalize; box-sizing:border-box;margin-top:0;margin-bottom:.5rem;font-family:inherit;font-weight:500;line-height:1.2;color:inherit;font-size:2rem;margin:20px 0">Hola ${email}</h3>
-                                    <h5 style="box-sizing:border-box;margin-top:0;margin-bottom:.5rem;font-family:inherit;font-weight:500;line-height:1.2;color:inherit;font-size:1.25rem;margin:20px 0">Hemos recibido su solicitud de recuperación de contraseña.</h5>
-                                    <div style="box-sizing:border-box;display:-webkit-box;display:-ms-flexbox;display:flex">
-                                        <div style="box-sizing:border-box;width:100%;min-height:1px;padding-right:15px;padding-left:15px;text-align:center">
-                                        </div>
-                                    </div>
-                                    <p style="box-sizing:border-box;margin-top:0;margin-bottom:1rem">Tu nueva contraseña es: ${result}</p>
-                                    <a href="https://grupofortalezasas.com/portal/trabajadores" style="box-sizing:border-box;text-decoration:none;display:inline-block;font-weight:400;text-align:center;white-space:nowrap;vertical-align:middle;border:1px solid transparent;color:#fff;line-height:1.5;margin:10px;border-radius:30px;background-color:#009BE0;border-color:#009BE0;font-size:0.95rem;padding:15px 20px"
-                                        target="_blank">Inciar sesion ahora</a>
-                                    <p style="box-sizing:border-box;margin-top:0;margin-bottom:1rem">tambien puedes copiar este enlace en tu URL</p>
-                                    <p> https://grupofortalezasas.com/portal/trabajadores</p>
-                                </div>
-                            </div>
-                            <div style="box-sizing:border-box;display:-webkit-box;display:-ms-flexbox;display:flex">
-                                <div style="box-sizing:border-box;width:100%;min-height:1px;padding-right:15px;padding-left:15px;margin:40px 0;text-align:center">
-                                    <p style="box-sizing:border-box;margin-top:0;margin-bottom:1rem">Si esta solicitud se ha enviado sin su consentimiento, puede ignorar este correo electrónico ó eliminarlo. </p>
-                                </div>
-                            </div>
+            </div>
+            </div>`,
+        };
 
-                        </div>
-                    </div>`
-        }
-
-        await workerDB.save();
-
-        config.sendMail(opciones, function(error, result) {
-
+        // send mail with defined transport object
+        transporter.sendMail(mailOptions, async(error, info) => {
             if (error) {
                 console.log(error);
-                return res.status(404).json({
+                return res.status(500).json({
                     ok: false,
-                    msg: 'No se ha podido recuperar la contraseña, intente nuevamente!'
+                    msg: 'Error inesperado'
                 });
             }
 
+            await workerDB.save();
+
             res.json({
                 ok: true,
-                msg: 'Hemos enviado al correo la nueva contraseña'
+                msg: 'Hemos enviado al correo la nueva contraseña, verifica la carpeta de correos spam'
             });
 
         });
