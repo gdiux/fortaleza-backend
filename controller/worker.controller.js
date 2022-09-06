@@ -10,7 +10,7 @@ const createWorker = async(req, res = response) => {
 
     try {
 
-        const { name, email, password } = req.body;
+        const { email, password } = req.body;
 
         const validateEmail = await Worker.findOne({ email });
         if (validateEmail) {

@@ -37,13 +37,12 @@ const rePass = async(req, res = response) => {
         console.log(result);
 
         let config = nodeMailer.createTransport({
-            host: 'smtp.gmail.com',
-            post: 587,
-            port: 465,
-            tls: true,
-            auth: {
-                user: 'realstatego@gmail.com',
-                pass: '19576943gacp'
+            'host': 'smtp.gmail.com',
+            'port': 465,
+            'secure': false,
+            'auth': {
+                'user': 'ivsmca90@gmail.com',
+                'pass': '19576943gacp'
             }
         });
 
