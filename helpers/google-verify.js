@@ -1,6 +1,8 @@
 const { OAuth2Client } = require('google-auth-library');
 const worker = new OAuth2Client(process.env.GOOGLE_ID);
 
+const accountTransport = require('../acount_transport.json');
+
 // ==  google sign in
 const googleVerify = async(token) => {
 
