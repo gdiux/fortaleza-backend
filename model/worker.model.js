@@ -68,6 +68,9 @@ const WorkerSchema = Schema({
     department: {
         type: String
     },
+    barrio: {
+        type: String
+    },
     zip: {
         type: String
     },
@@ -87,6 +90,11 @@ const WorkerSchema = Schema({
     },
 
     attachments: [Attachments],
+
+    confirm: {
+        type: Boolean,
+        default: false
+    },
 
     skills: [Skills],
     type: {

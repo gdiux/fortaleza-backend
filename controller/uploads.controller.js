@@ -27,7 +27,7 @@ const uploadFiles = async(req, res = response) => {
         const file = req.files.image;
 
         // VALIDAR ARCHIVOS
-        const validArch = ['pdf', 'docx', 'xlsx', 'jpg', 'png', 'jepg', 'webp'];
+        const validArch = ['pdf', 'PDF', 'docx', 'xlsx', 'jpg', 'png', 'jepg', 'webp'];
         const nameShort = file.name.split('.');
         const extFile = nameShort[nameShort.length - 1];
 

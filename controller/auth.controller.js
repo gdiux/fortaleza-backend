@@ -171,39 +171,46 @@ const login = async(req, res = response) => {
 
         // VALIDATE USER
         const workerDB = await Worker.findOne({ email });
-        if (!workerDB) {
-            return res.status(404).json({
-                ok: false,
-                msg: 'El usuario o la contraseña es incorrecta'
-            });
 
-        }
-        // VALIDATE USER
+        setTimeout(async() => {
 
-        // PASSWORD
-        const validPassword = bcrypt.compareSync(password, workerDB.password);
-        if (!validPassword) {
-            return res.status(400).json({
-                ok: false,
-                msg: 'El email o la contraseña es incorrecta'
-            });
-        } else {
+            if (!workerDB) {
+                return res.status(404).json({
+                    ok: false,
+                    msg: 'El usuario o la contraseña es incorrecta'
+                });
 
-            if (workerDB.status) {
-                const token = await generarWorkerJWT(workerDB.id);
+            }
+            // VALIDATE USER
 
-                res.json({
-                    ok: true,
-                    token
+            // PASSWORD
+            const validPassword = bcrypt.compareSync(password, workerDB.password);
+            if (!validPassword) {
+                return res.status(400).json({
+                    ok: false,
+                    msg: 'El email o la contraseña es incorrecta'
                 });
             } else {
-                return res.status(401).json({
-                    ok: false,
-                    msg: 'Tu cuenta a sido desactivada por un administrador'
-                });
+
+                if (workerDB.status) {
+                    const token = await generarWorkerJWT(workerDB.id);
+
+                    res.json({
+                        ok: true,
+                        token
+                    });
+                } else {
+                    return res.status(401).json({
+                        ok: false,
+                        msg: 'Tu cuenta a sido desactivada por un administrador'
+                    });
+                }
+
             }
 
-        }
+        }, 1500)
+
+
 
         // JWT - JWT
 
@@ -233,7 +240,7 @@ const renewJWT = async(req, res = response) => {
     const token = await generarJWT(uid);
 
     // SEARCH USER
-    const usuario = await User.findById(uid, 'usuario name role img uid status cerrada turno privilegios skills');
+    const usuario = await User.findById(uid, 'usuario name role img uid status cerrada turno privilegios skills barrio');
     // SEARCH USER
 
     res.status(200).json({
@@ -316,7 +323,7 @@ const renewWorkerJWT = async(req, res = response) => {
         const token = await generarWorkerJWT(wid);
 
         // SEARCH USER
-        const worker = await Worker.findById(wid, 'name cedula phone email address city department zip status google img attachments type fecha skills');
+        const worker = await Worker.findById(wid, 'name cedula phone email address city department zip status google img attachments type fecha skills barrio');
         // SEARCH USER
 
         res.status(200).json({
