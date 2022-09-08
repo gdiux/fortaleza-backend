@@ -9,6 +9,8 @@ const bodyParser = require('body-parser');
 
 const robots = require('express-robots-txt');
 
+const zip = require('express-easy-zip');
+
 //Conection DB
 const { dbConection } = require('./database/config');
 
@@ -32,6 +34,8 @@ app.use(robots({
     UserAgent: '*',
     Sitemap: 'https://grupofortalezasas.com/assets/sitemap.xml',
 }));
+
+app.use(zip());
 
 
 // DataBase

@@ -1,6 +1,10 @@
 const { response } = require('express');
 const bcrypt = require('bcryptjs');
 
+const path = require('path');
+
+const fs = require('fs');
+
 const Worker = require('../model/worker.model');
 
 /** ======================================================================
@@ -143,10 +147,56 @@ const deleteExpWorker = async(req, res = response) => {
 
 };
 
+/** ======================================================================
+ *  DOWN LOAD ZIP ALL FILES
+=========================================================================*/
+const zipAllWorker = async(req, res = response) => {
+
+    try {
+
+        const wid = req.params.wid;
+        // SEARCH USER
+        const worker = await Worker.findById(wid);
+        if (!worker) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'No existe ningun usuario con este ID'
+            });
+        };
+        // SEARCH USER
+
+        let filesWorker = [];
+
+        for (let i = 0; i < worker.attachments.length; i++) {
+
+            filesWorker.push({
+                path: path.join(__dirname, `../uploads/archivos/${worker.attachments[i].attachment}`),
+                name: `${worker.attachments[i].attachment}`
+            })
+
+        };
+
+        res.zip({
+            files: filesWorker,
+            filename: `${worker.name}.zip`
+        });
+
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            ok: false,
+            msg: 'Error inesperado, porfavor intente nuevamente'
+        });
+    }
+
+};
+
 
 // EXPORTS
 module.exports = {
     createWorker,
     updateWorker,
-    deleteExpWorker
+    deleteExpWorker,
+    zipAllWorker
 }

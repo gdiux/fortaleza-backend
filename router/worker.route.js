@@ -9,7 +9,7 @@ const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT, validarWorkerJWT } = require('../middlewares/validar-jwt');
 
 // CONTROLLERS
-const { createWorker, updateWorker, deleteExpWorker } = require('../controller/worker.controller');
+const { createWorker, updateWorker, deleteExpWorker, zipAllWorker } = require('../controller/worker.controller');
 
 const router = Router();
 
@@ -49,6 +49,14 @@ router.delete('/exp/:id', validarWorkerJWT, deleteExpWorker);
 *  DELETE EXP WORKER
 =========================================================================*/
 
+
+/** =====================================================================
+ *  GET WORKERS
+=========================================================================*/
+router.get('/zip/all/:wid', zipAllWorker);
+/** =====================================================================
+ *  GET WORKERS
+=========================================================================*/
 
 
 // EXPORT
