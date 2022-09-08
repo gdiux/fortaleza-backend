@@ -10,13 +10,21 @@ const createWorker = async(req, res = response) => {
 
     try {
 
-        const { email, password } = req.body;
+        const { email, cedula, password } = req.body;
 
         const validateEmail = await Worker.findOne({ email });
         if (validateEmail) {
             return res.status(400).json({
                 ok: false,
                 msg: 'Ya existen un trabajador con este correo electronico'
+            });
+        }
+
+        const validateCedula = await Worker.findOne({ cedula });
+        if (validateCedula) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'Ya existen un trabajador con este numero de Cedula de Ciudadania'
             });
         }
 
