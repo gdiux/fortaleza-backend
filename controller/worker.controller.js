@@ -169,9 +169,12 @@ const zipAllWorker = async(req, res = response) => {
 
         for (let i = 0; i < worker.attachments.length; i++) {
 
+            const nameShort = worker.attachments[i].attachment.split('.');
+            const extFile = nameShort[nameShort.length - 1];
+
             filesWorker.push({
                 path: path.join(__dirname, `../uploads/archivos/${worker.attachments[i].attachment}`),
-                name: `${worker.attachments[i].desc}`
+                name: `${worker.attachments[i].attachment}.${extFile}`
             })
 
         };
