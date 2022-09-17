@@ -6,10 +6,10 @@ const { check } = require('express-validator');
 
 // HELPERS
 const { validarCampos } = require('../middlewares/validar-campos');
-const { validarJWT, validarWorkerJWT } = require('../middlewares/validar-jwt');
+const { validarJWT, validarWorkerJWT, validarBussinessJWT } = require('../middlewares/validar-jwt');
 
 // CONTROLLERS
-const { googleSignIn, renewWorkerJWT, login, rePass } = require('../controller/auth.controller');
+const { googleSignIn, renewWorkerJWT, login, rePass, loginBussiness, renewJWTBussiness, rePassBussiness } = require('../controller/auth.controller');
 
 const router = Router();
 
@@ -41,9 +41,44 @@ router.post('/recuperar/password', [
 =========================================================================*/
 
 /** =====================================================================
+ *  RECUPERAR CONTRASEÑA BUSSINESS
+=========================================================================*/
+router.post('/recuperar/password/bussiness', [
+        check('email', 'El email es obligatorio').not().isEmpty(),
+        validarCampos
+    ],
+    rePassBussiness
+);
+/** =====================================================================
+*  RECUPERAR CONTRASEÑA BUSSINESS
+=========================================================================*/
+
+/** =====================================================================
  *  RENEW TOKEN WORKER
 =========================================================================*/
 router.get('/renew/worker', validarWorkerJWT, renewWorkerJWT);
+/** =====================================================================
+*  RENEW TOKEN WORKER
+=========================================================================*/
+
+/** =====================================================================
+ *  LOGIN - BUSSINESS
+=========================================================================*/
+router.post('/bussiness', [
+        check('email', 'El email es obligatorio').not().isEmpty(),
+        check('password', 'La contraseña es obligatoria').not().isEmpty(),
+        validarCampos
+    ],
+    loginBussiness
+);
+/** =====================================================================
+*  LOGIN - BUSSINESS
+=========================================================================*/
+
+/** =====================================================================
+ *  RENEW TOKEN WORKER
+=========================================================================*/
+router.get('/renew/bussiness', validarBussinessJWT, renewJWTBussiness);
 /** =====================================================================
 *  RENEW TOKEN WORKER
 =========================================================================*/

@@ -2,6 +2,7 @@ const fs = require('fs');
 
 // MODELS
 const Worker = require('../model/worker.model');
+const Bussiness = require('../model/bussiness.model');
 
 /** =====================================================================
  *  DELETE IMAGE
@@ -46,6 +47,23 @@ const updateImage = async(tipo, id, nameFile) => {
             worker.img = nameFile;
             await worker.save();
             return worker;
+
+            break;
+        case 'bussiness':
+
+            const bussiness = await Bussiness.findById(id);
+            if (!bussiness) {
+                return false;
+            }
+
+            // VALIDATE IMAGE
+            pathOld = `./uploads/bussiness/${ bussiness.img }`;
+            deleteImage(pathOld);
+
+            // SAVE IMAGE
+            bussiness.img = nameFile;
+            await bussiness.save();
+            return bussiness;
 
             break;
         case 'archivoss':

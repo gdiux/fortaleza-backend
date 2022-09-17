@@ -19,10 +19,16 @@ const validarJWT = (req, res = response, next) => {
 
     try {
 
-        const { uid } = jwt.verify(token, process.env.SECRET_SEED_JWT);
+        const { wid, bid } = jwt.verify(token, process.env.SECRET_SEED_JWT);
 
-        req.uid = uid;
-        next();
+        if (wid) {
+            req.wid = wid;
+            next();
+        } else {
+            req.bid = bid;
+            next();
+        }
+
 
     } catch (error) {
         return res.status(401).json({
@@ -33,6 +39,8 @@ const validarJWT = (req, res = response, next) => {
     }
 
 };
+
+// JWT - WORKERS
 
 const validarWorkerJWT = (req, res = response, next) => {
 
@@ -63,8 +71,41 @@ const validarWorkerJWT = (req, res = response, next) => {
 
 };
 
+// JWT - BUSSINESS
+
+const validarBussinessJWT = (req, res = response, next) => {
+
+    // READ TOKEN
+    const token = req.header('x-token');
+
+    if (!token) {
+        return res.status(401).json({
+            ok: false,
+            msg: 'No existen token, debe de iniciar session'
+        });
+    }
+
+    try {
+
+        const { bid } = jwt.verify(token, process.env.SECRET_SEED_JWT);
+
+        req.bid = bid;
+        next();
+
+    } catch (error) {
+        return res.status(401).json({
+            ok: false,
+            msg: 'Token invalido'
+        });
+
+    }
+
+};
+
 
 module.exports = {
     validarJWT,
-    validarWorkerJWT
+    validarWorkerJWT,
+    validarBussinessJWT
+
 };

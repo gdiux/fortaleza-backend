@@ -152,11 +152,17 @@ const uploadFiles = async(req, res = response) => {
 const fileUpload = async(req, res = response) => {
 
     const tipo = req.params.tipo;
-    const wid = req.wid;
+    let id = '';
+
+    if (req.wid) {
+        id = req.wid
+    } else {
+        id = req.bid
+    }
 
     const desc = req.query.desc;
 
-    const validType = ['worker', 'archivos'];
+    const validType = ['worker', 'archivos', 'bussiness'];
 
     // VALID TYPES
     if (!validType.includes(tipo)) {
@@ -212,7 +218,7 @@ const fileUpload = async(req, res = response) => {
         .toFile(path, async(err, info) => {
 
             // UPDATE IMAGE
-            const nuevo = await updateImage(tipo, wid, nameFile);
+            const nuevo = await updateImage(tipo, id, nameFile);
 
             res.json({
                 ok: true,
@@ -243,7 +249,7 @@ const getImages = (req, res = response) => {
 
         // CHECK TYPE
         if (tipo !== 'worker') {
-            const pathImg = path.join(__dirname, `../uploads/default.png`);
+            const pathImg = path.join(__dirname, `../uploads/user-default.png`);
             res.sendFile(pathImg);
         } else {
             const pathImg = path.join(__dirname, `../uploads/worker/user-default.png`);
