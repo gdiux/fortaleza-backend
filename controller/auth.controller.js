@@ -41,7 +41,7 @@ const rePassBussiness = async(req, res = response) => {
         const salt = bcrypt.genSaltSync();
         bussinessDB.password = bcrypt.hashSync(result, salt);
 
-        // ========================= NODEMAILER =================================
+        // ========================= NODEMAILER ===================================
         const subject = 'Recuperar contraseña '; // Subject line
         const msg = 'Se ha enviado un correo electronico a su email con la nueva contraseña';
         const html = `<div style="box-sizing:border-box;margin:0;font-family: Montserrat,-apple-system,BlinkMacSystemFont;font-size:1rem;font-weight:400;line-height:1.5;text-align:left;background-color:#fff;color:#333">
