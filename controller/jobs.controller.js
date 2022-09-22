@@ -41,8 +41,8 @@ const getJobWorker = async(req, res = response) => {
         const worker = req.params.worker;
 
         const jobs = await Job.find({ worker })
-            .populate('bussiness', 'name nit email phone address bid')
-            .populate('worker', 'name cedula email phone address wid');
+            .populate('bussiness', 'name nit email phone address bid img')
+            .populate('worker', 'name cedula email phone address wid img');
 
         res.json({
             ok: true,

@@ -3,7 +3,7 @@
 =========================================================================*/
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { createJob, updateJob, getJobBussiness, deleteJob } = require('../controller/jobs.controller');
+const { createJob, updateJob, getJobBussiness, deleteJob, getJobWorker } = require('../controller/jobs.controller');
 
 // HELPERS
 const { validarCampos } = require('../middlewares/validar-campos');
@@ -23,6 +23,18 @@ router.get('/all/:bussiness', [
 );
 /** =====================================================================
  *  GET JOBS OF BUSSINESS
+=========================================================================*/
+
+/** =====================================================================
+ *  GET JOBS FOR WORKER
+=========================================================================*/
+router.get('/worker/:worker', [
+        validarWorkerJWT,
+    ],
+    getJobWorker
+);
+/** =====================================================================
+*  GET JOBS FOR WORKER
 =========================================================================*/
 
 /** =====================================================================

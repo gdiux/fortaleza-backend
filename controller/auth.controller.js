@@ -13,6 +13,7 @@ const { google } = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
 
 const accountTransport = require('../acount_transport.json');
+const { sendMail } = require('../helpers/send-mail');
 
 /** =====================================================================
  *  REEBOOT PASSWORD
@@ -41,49 +42,13 @@ const rePassBussiness = async(req, res = response) => {
         bussinessDB.password = bcrypt.hashSync(result, salt);
 
         // ========================= NODEMAILER =================================
-
-        const oauth2Client = new OAuth2(
-            accountTransport.auth.clientId,
-            accountTransport.auth.clientSecret,
-            "https://developers.google.com/oauthplayground",
-        );
-
-        oauth2Client.setCredentials({
-            refresh_token: accountTransport.auth.refreshToken,
-            tls: {
-                rejectUnauthorized: false
-            }
-        });
-
-        oauth2Client.getAccessToken((err, token) => {
-
-            if (err) {
-                console.log(err);
-                return res.status(500).json({
-                    ok: false,
-                    msg: 'Error inesperado ln 65'
-                });
-            };
-
-            // ENVIAR EMAIL
-
-            const transporter = nodemailer.createTransport({
-                'service': 'gmail',
-                'auth': {
-                    'type': 'OAuth2',
-                    'user': `${accountTransport.auth.user}`,
-                    'clientId': `${accountTransport.auth.clientId}`,
-                    'clientSecret': `${accountTransport.auth.clientSecret}`,
-                    'refreshToken': `${token}`
-                }
-            });
-
-            const mailOptions = {
-                from: '"Grupo Fortaleza" <nomina.fortaleza@gmail.com>', // sender address (who sends)
-                to: email, // list of receivers (who receives)
-                subject: 'Recuperar contraseña ', // Subject line
-                html: `<div style="box-sizing:border-box;margin:0;font-family: Montserrat,-apple-system,BlinkMacSystemFont;font-size:1rem;font-weight:400;line-height:1.5;text-align:left;background-color:#fff;color:#333">
+        const subject = 'Recuperar contraseña '; // Subject line
+        const msg = 'Se ha enviado un correo electronico a su email con la nueva contraseña';
+        const html = `<div style="box-sizing:border-box;margin:0;font-family: Montserrat,-apple-system,BlinkMacSystemFont;font-size:1rem;font-weight:400;line-height:1.5;text-align:left;background-color:#fff;color:#333">
                 <div class="adM">
+                    <center>
+                        <img src="https://grupofortalezasas.com/assets/img/logo/logo.webp" style="max-width: 250px;">
+                    </center>
                 </div>
                 <div style="box-sizing:border-box;width:100%;padding-right:15px;padding-left:15px;margin-right:auto;margin-left:auto;max-width:620px">
                     <div class="adM">
@@ -109,10 +74,10 @@ const rePassBussiness = async(req, res = response) => {
                                 </div>
                             </div>
                             <p style="box-sizing:border-box;margin-top:0;margin-bottom:1rem">Tu nueva contraseña es: ${result}</p>
-                            <a href="https://grupofortalezasas.com/portal/trabajadores" style="box-sizing:border-box;text-decoration:none;display:inline-block;font-weight:400;text-align:center;white-space:nowrap;vertical-align:middle;border:1px solid transparent;color:#fff;line-height:1.5;margin:10px;border-radius:30px;background-color:#009BE0;border-color:#009BE0;font-size:0.95rem;padding:15px 20px"
+                            <a href="https://grupofortalezasas.com/portal/empresas" style="box-sizing:border-box;text-decoration:none;display:inline-block;font-weight:400;text-align:center;white-space:nowrap;vertical-align:middle;border:1px solid transparent;color:#fff;line-height:1.5;margin:10px;border-radius:30px;background-color:#009BE0;border-color:#009BE0;font-size:0.95rem;padding:15px 20px"
                                 target="_blank">Inciar sesion ahora</a>
                             <p style="box-sizing:border-box;margin-top:0;margin-bottom:1rem">tambien puedes copiar este enlace en tu URL</p>
-                            <p> https://grupofortalezasas.com/portal/trabajadores</p>
+                            <p> https://grupofortalezasas.com/portal/empresas</p>
                         </div>
                     </div>
                     <div style="box-sizing:border-box;display:-webkit-box;display:-ms-flexbox;display:flex">
@@ -122,31 +87,17 @@ const rePassBussiness = async(req, res = response) => {
                     </div>
     
                 </div>
-                </div>`,
-            };
+                </div>`;
 
-            // send mail with defined transport object
-            transporter.sendMail(mailOptions, async(error, info) => {
-                if (error) {
-                    console.log(error);
-                    return res.status(500).json({
-                        ok: false,
-                        msg: 'Error inesperado'
-                    });
-                }
+        const send_mail = await sendMail(email, subject, html, msg);
 
-                await bussinessDB.save();
 
-                res.json({
-                    ok: true,
-                    msg: 'Hemos enviado al correo la nueva contraseña, verifica la carpeta de correos spam'
-                });
+        await bussinessDB.save();
 
-            });
-
+        res.json({
+            ok: true,
+            msg: 'Hemos enviado al correo la nueva contraseña, verifica la carpeta de correos spam'
         });
-
-
 
 
     } catch (error) {
@@ -190,48 +141,13 @@ const rePass = async(req, res = response) => {
 
         // ========================= NODEMAILER =================================
 
-        const oauth2Client = new OAuth2(
-            accountTransport.auth.clientId,
-            accountTransport.auth.clientSecret,
-            "https://developers.google.com/oauthplayground",
-        );
-
-        oauth2Client.setCredentials({
-            refresh_token: accountTransport.auth.refreshToken,
-            tls: {
-                rejectUnauthorized: false
-            }
-        });
-
-        oauth2Client.getAccessToken((err, token) => {
-
-            if (err) {
-                console.log(err);
-                return res.status(500).json({
-                    ok: false,
-                    msg: 'Error inesperado ln 65'
-                });
-            };
-
-            // ENVIAR EMAIL
-
-            const transporter = nodemailer.createTransport({
-                'service': 'gmail',
-                'auth': {
-                    'type': 'OAuth2',
-                    'user': `${accountTransport.auth.user}`,
-                    'clientId': `${accountTransport.auth.clientId}`,
-                    'clientSecret': `${accountTransport.auth.clientSecret}`,
-                    'refreshToken': `${token}`
-                }
-            });
-
-            const mailOptions = {
-                from: '"Grupo Fortaleza" <nomina.fortaleza@gmail.com>', // sender address (who sends)
-                to: email, // list of receivers (who receives)
-                subject: 'Recuperar contraseña ', // Subject line
-                html: `<div style="box-sizing:border-box;margin:0;font-family: Montserrat,-apple-system,BlinkMacSystemFont;font-size:1rem;font-weight:400;line-height:1.5;text-align:left;background-color:#fff;color:#333">
+        const msg = 'Se ha enviado un correo electronico a su email con la nueva contraseña';
+        const subject = 'Recuperar contraseña '; // Subject line
+        const html = `<div style="box-sizing:border-box;margin:0;font-family: Montserrat,-apple-system,BlinkMacSystemFont;font-size:1rem;font-weight:400;line-height:1.5;text-align:left;background-color:#fff;color:#333">
                 <div class="adM">
+                    <center>
+                        <img src="https://grupofortalezasas.com/assets/img/logo/logo.webp" style="max-width: 250px;">
+                    </center>
                 </div>
                 <div style="box-sizing:border-box;width:100%;padding-right:15px;padding-left:15px;margin-right:auto;margin-left:auto;max-width:620px">
                     <div class="adM">
@@ -270,31 +186,16 @@ const rePass = async(req, res = response) => {
                     </div>
     
                 </div>
-                </div>`,
-            };
+                </div>`;
 
-            // send mail with defined transport object
-            transporter.sendMail(mailOptions, async(error, info) => {
-                if (error) {
-                    console.log(error);
-                    return res.status(500).json({
-                        ok: false,
-                        msg: 'Error inesperado'
-                    });
-                }
+        const send_mail = await sendMail(email, subject, html, msg);
 
-                await workerDB.save();
+        await workerDB.save();
 
-                res.json({
-                    ok: true,
-                    msg: 'Hemos enviado al correo la nueva contraseña, verifica la carpeta de correos spam'
-                });
-
-            });
-
+        res.json({
+            ok: true,
+            msg: 'Hemos enviado al correo la nueva contraseña, verifica la carpeta de correos spam'
         });
-
-
 
 
     } catch (error) {
