@@ -27,7 +27,7 @@ const uploadFiles = async(req, res = response) => {
         const file = req.files.image;
 
         // VALIDAR ARCHIVOS
-        const validArch = ['pdf', 'PDF', 'docx', 'xlsx', 'jpg', 'png', 'jepg', 'webp'];
+        const validArch = ['pdf', 'PDF', 'docx', 'xlsx', 'jpg', 'png', 'jpeg', 'webp'];
         const nameShort = file.name.split('.');
         const extFile = nameShort[nameShort.length - 1];
 
@@ -101,7 +101,6 @@ const uploadFiles = async(req, res = response) => {
 
             // CONVERTIR A WEBP
             sharp(req.files.image.data)
-                .resize(1024, 768)
                 .webp({ equality: 75, effort: 6 })
                 .toFile(path, async(err, info) => {
 
