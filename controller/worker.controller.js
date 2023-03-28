@@ -5,6 +5,8 @@ const path = require('path');
 
 const fs = require('fs');
 
+const { generarJWT, generarWorkerJWT, generarBussinessJWT } = require('../helpers/jwt');
+
 const Worker = require('../model/worker.model');
 const { sendMail } = require('../helpers/send-mail');
 
@@ -96,11 +98,14 @@ const createWorker = async(req, res = response) => {
                 </div>
                 </div>`;
 
-        const send_mail = await sendMail(email, subject, html, msg);
+        // const send_mail = await sendMail(email, subject, html, msg);
+
+        const token = await generarWorkerJWT(worker._id);
 
         res.json({
             ok: true,
-            worker
+            worker,
+            token
         });
 
 

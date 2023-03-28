@@ -227,7 +227,7 @@ const login = async(req, res = response) => {
             if (!workerDB) {
                 return res.status(404).json({
                     ok: false,
-                    msg: 'El usuario o la contraseña es incorrecta'
+                    msg: 'El email o la contraseña es incorrecta'
                 });
 
             }

@@ -18,8 +18,8 @@ const router = Router();
 =========================================================================*/
 router.post('/', [
         check('name', 'El nombre es obligatorio').not().isEmpty(),
-        check('email', 'El nombre es obligatorio').isEmail(),
-        check('password', 'El nombre es obligatorio').not().isEmpty(),
+        check('email', 'El email es obligatorio').isEmail(),
+        check('password', 'La contraseña es obligatoria').not().isEmpty(),
         validarCampos
     ],
     createWorker
