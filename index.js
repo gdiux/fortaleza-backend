@@ -26,8 +26,8 @@ app.use(cors());
 
 //app.use(express.bodyParser({ limit: '50mb' }));
 // READ BODY
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ limit: '100mb', extended: true, parameterLimit: 50000 }));
 
 // ROBOT TXT
 app.use(robots({

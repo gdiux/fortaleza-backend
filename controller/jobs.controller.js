@@ -298,9 +298,12 @@ const certificadoLaboralPdf = async(req, res = response) => {
                 align: 'left',
             });
 
-        doc.end();
+        await doc.end();
 
-        res.sendFile(pathPDf);
+        if (fs.existsSync(pathPDf)) {
+            res.sendFile(pathPDf);
+        }
+
 
 
     } catch (error) {
