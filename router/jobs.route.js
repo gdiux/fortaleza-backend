@@ -3,7 +3,7 @@
 =========================================================================*/
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { createJob, updateJob, getJobBussiness, deleteJob, getJobWorker } = require('../controller/jobs.controller');
+const { createJob, updateJob, getJobBussiness, deleteJob, getJobWorker, certificadoLaboralPdf } = require('../controller/jobs.controller');
 
 // HELPERS
 const { validarCampos } = require('../middlewares/validar-campos');
@@ -35,6 +35,14 @@ router.get('/worker/:worker', [
 );
 /** =====================================================================
 *  GET JOBS FOR WORKER
+=========================================================================*/
+
+/** =====================================================================
+ *  GET CERTIFICADO LABORAL JOBS FOR WORKER
+=========================================================================*/
+router.get('/certificado/:jid', certificadoLaboralPdf);
+/** =====================================================================
+*  GET CERTIFICADO LABORAL JOBS FOR WORKER
 =========================================================================*/
 
 /** =====================================================================

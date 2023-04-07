@@ -252,11 +252,98 @@ const zipAllWorker = async(req, res = response) => {
 
 };
 
+/** ======================================================================
+ *  ADD SKILL WORKER
+=========================================================================*/
+const addSkill = async(req, res = response) => {
+
+    try {
+
+        const wid = req.params.id;
+        const skill = req.body;
+
+        // SEARCH USER
+        const worker = await Worker.findById(wid);
+        if (!worker) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'No existe ningun usuario con este ID'
+            });
+        };
+        // SEARCH USER
+
+        worker.skills.push(JSON.parse(skill.skill));
+
+        await worker.save();
+
+        res.json({
+            ok: true,
+            worker
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            ok: false,
+            msg: 'Error inesperado, porfavor intente nuevamente'
+        });
+    }
+
+};
+
+/** ======================================================================
+ *  DELETE SKILL WORKER
+=========================================================================*/
+const delSkill = async(req, res = response) => {
+
+    try {
+
+        const wid = req.params.wid;
+        const skill = req.params.skill;
+
+        // SEARCH USER
+        const workerDB = await Worker.findById(wid);
+        if (!workerDB) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'No existe ningun usuario con este ID'
+            });
+        };
+        // SEARCH USER
+
+        const deleteSkill = await Worker.updateOne({ _id: wid }, { $pull: { skills: { _id: skill } } });
+
+        // VERIFICAR SI SE ACTUALIZO
+        if (deleteSkill.nModified === 0) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'No se pudo eliminar el skill, porfavor intente nuevamente'
+            });
+        }
+
+        const worker = await Worker.findById(wid);
+
+        res.json({
+            ok: true,
+            worker
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            ok: false,
+            msg: 'Error inesperado, porfavor intente nuevamente'
+        });
+    }
+
+};
 
 // EXPORTS
 module.exports = {
     createWorker,
     updateWorker,
     deleteExpWorker,
-    zipAllWorker
+    zipAllWorker,
+    addSkill,
+    delSkill
 }

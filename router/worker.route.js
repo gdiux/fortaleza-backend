@@ -9,7 +9,7 @@ const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT, validarWorkerJWT } = require('../middlewares/validar-jwt');
 
 // CONTROLLERS
-const { createWorker, updateWorker, deleteExpWorker, zipAllWorker } = require('../controller/worker.controller');
+const { createWorker, updateWorker, deleteExpWorker, zipAllWorker, addSkill, delSkill } = require('../controller/worker.controller');
 
 const router = Router();
 
@@ -24,6 +24,22 @@ router.post('/', [
     ],
     createWorker
 );
+/** =====================================================================
+*  POST WORKER
+=========================================================================*/
+
+/** =====================================================================
+ *  POST WORKER
+=========================================================================*/
+router.post('/add/skill/:id', addSkill);
+/** =====================================================================
+*  POST WORKER
+=========================================================================*/
+
+/** =====================================================================
+ *  POST WORKER
+=========================================================================*/
+router.delete('/del/:skill/:wid', delSkill);
 /** =====================================================================
 *  POST WORKER
 =========================================================================*/
