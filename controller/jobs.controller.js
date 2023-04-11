@@ -179,6 +179,8 @@ const certificadoLaboralPdf = async(req, res = response) => {
 
     try {
 
+        console.log('certificado');
+
         const jid = req.params.jid;
         const mes = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre', ];
 
@@ -194,12 +196,20 @@ const certificadoLaboralPdf = async(req, res = response) => {
         }
         // SEARCH JOB
 
+        const pathPDf = path.join(__dirname, `../uploads/certificados/${jobDB.worker._id}.pdf`);
+
+        // VALIDATE CERTIFICADO
+        if (fs.existsSync(pathPDf)) {
+            // DELET CERTIFICADO OLD
+            fs.unlinkSync(pathPDf);
+        }
+
+
         const fechaIn = new Date(jobDB.fechain);
 
         const parrafo = ` El colaborador (a) ${jobDB.worker.name}, con Cédula de Ciudadanía número ${jobDB.worker.cedula}, labora al servicio de esta compañía desde el ${fechaIn.getDay()}/${ fechaIn.getUTCMonth() + 1}/${ fechaIn.getFullYear() } a la fecha, mediante un contrato de Obra o Labor Contratada desempeñando el cargo de ${jobDB.name} en la empresa usuaria ${jobDB.bussiness.name}. `;
 
         // Create a document
-        const pathPDf = path.join(__dirname, `../pdf/certificadoLaboral.pdf`);
         const doc = new PDFDocument();
 
         // Pipe its output somewhere, like to a file or HTTP response
@@ -300,9 +310,19 @@ const certificadoLaboralPdf = async(req, res = response) => {
 
         await doc.end();
 
-        if (fs.existsSync(pathPDf)) {
-            res.sendFile(pathPDf);
-        }
+        setTimeout(() => {
+
+            if (fs.existsSync(pathPDf)) {
+                res.sendFile(pathImg);
+            } else {
+                res.json({
+                    ok: false,
+                    msg: 'No se ha generado el certificado laboral exitosamente!'
+                });
+            }
+
+        }, 2000);
+
 
 
 
