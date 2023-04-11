@@ -313,14 +313,11 @@ const certificadoLaboralPdf = async(req, res = response) => {
         setTimeout(() => {
 
             if (fs.existsSync(pathPDf)) {
-                return res.json({
-                    ok: true,
-                    msg: 'Se ha generado exitosamente el certificado laboral'
-                });
+                res.sendFile(pathPDf);
             } else {
-                return res.status(404).json({
+                res.json({
                     ok: false,
-                    msg: 'No existe ninguna oferta de empleo con este ID'
+                    msg: 'No se ha generado el certificado laboral exitosamente!'
                 });
             }
 
