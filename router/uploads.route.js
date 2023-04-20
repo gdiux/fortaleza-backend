@@ -10,7 +10,7 @@ const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT, validarWorkerJWT } = require('../middlewares/validar-jwt');
 
 // CONTROLLERS
-const { fileUpload, getImages, uploadFiles, deleteFile } = require('../controller/uploads.controller');
+const { fileUpload, getImages, uploadFiles, deleteFile, fileUploadApp } = require('../controller/uploads.controller');
 
 const router = Router();
 
@@ -20,6 +20,14 @@ router.use(expressFileUpload());
  *  UPLOADS IMG
 =========================================================================*/
 router.put('/:tipo', validarJWT, fileUpload);
+/** =====================================================================
+ *  UPLOADS IMG
+=========================================================================*/
+
+/** =====================================================================
+ *  UPLOADS IMG
+=========================================================================*/
+router.put('/:tipo/app', validarJWT, fileUploadApp);
 /** =====================================================================
  *  UPLOADS IMG
 =========================================================================*/

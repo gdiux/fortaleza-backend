@@ -179,8 +179,6 @@ const certificadoLaboralPdf = async(req, res = response) => {
 
     try {
 
-        console.log('certificado');
-
         const jid = req.params.jid;
         const mes = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre', ];
 

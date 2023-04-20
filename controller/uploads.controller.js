@@ -151,6 +151,7 @@ const uploadFiles = async(req, res = response) => {
 const fileUpload = async(req, res = response) => {
 
     const tipo = req.params.tipo;
+    const mob = req.query.mob || 'no';
     let id = '';
 
     if (req.wid) {
@@ -179,6 +180,8 @@ const fileUpload = async(req, res = response) => {
         });
     }
 
+    console.log(req.files);
+    console.log(mob);
 
     // PROCESS IMAGE
     const file = await sharp(req.files.image.data).metadata();
@@ -231,6 +234,93 @@ const fileUpload = async(req, res = response) => {
 /** =====================================================================
  *  UPLOADS
 =========================================================================*/
+
+/** =====================================================================
+ *  UPLOADS MOBILE
+=========================================================================*/
+const fileUploadApp = async(req, res = response) => {
+
+    const tipo = req.params.tipo;
+    let id = '';
+
+    if (req.wid) {
+        id = req.wid
+    } else {
+        id = req.bid
+    }
+
+    const desc = req.query.desc;
+
+    const validType = ['worker', 'archivos', 'bussiness'];
+
+    // VALID TYPES
+    if (!validType.includes(tipo)) {
+        return res.status(400).json({
+            ok: false,
+            msg: 'El tipo es invalido'
+        });
+    }
+
+    // VALIDATE IMAGE
+    if (!req.files || Object.keys(req.files).length === 0) {
+        return res.status(400).json({
+            ok: false,
+            msg: 'No has seleccionado ningún archivo'
+        });
+    }
+
+    // PROCESS IMAGE
+    const file = await sharp(req.files.file.data).metadata();
+
+    // const nameShort = file.format.split('.');
+    const extFile = file.format;
+
+    // VALID EXT
+    const validExt = ['jpg', 'png', 'jpeg', 'webp', 'bmp', 'svg'];
+
+    if (!validExt.includes(extFile)) {
+
+        return res.status(400).json({
+            ok: false,
+            msg: 'No se permite este tipo de imagen, solo extenciones JPG - PNG - WEBP - SVG - RAR - ZIP - EPS - AI'
+        });
+    }
+    // VALID EXT
+
+    // GENERATE NAME UID
+    const nameFile = `${ uuidv4() }.webp`;
+
+    // PATH IMAGE
+    const path = `./uploads/${ tipo }/${ nameFile }`;
+
+    // CONVERTIR A WEBP
+    sharp(req.files.file.data)
+        .resize({
+            width: 400,
+            height: 400,
+            fit: sharp.fit.cover,
+            position: sharp.strategy.entropy
+
+        })
+        .webp({ equality: 75, effort: 6 })
+        .toFile(path, async(err, info) => {
+
+            // UPDATE IMAGE
+            const nuevo = await updateImage(tipo, id, nameFile);
+
+            res.json({
+                ok: true,
+                worker: nuevo
+
+            });
+
+
+        });
+};
+/** =====================================================================
+ *  UPLOADS MOBILE
+=========================================================================*/
+
 /** =====================================================================
  *  GET IMAGES
 =========================================================================*/
@@ -320,5 +410,6 @@ module.exports = {
     fileUpload,
     getImages,
     uploadFiles,
-    deleteFile
+    deleteFile,
+    fileUploadApp
 };
