@@ -35,7 +35,7 @@ router.put('/:tipo/app', validarJWT, fileUploadApp);
 /** =====================================================================
  *  UPLOADS FILES
 =========================================================================*/
-router.put('/files/:type/:desc/:wid', validarWorkerJWT, uploadFiles);
+router.put('/files/:type/:desc/:wid/:tipo/:parentesco/:numero/:beneficiario', validarWorkerJWT, uploadFiles);
 /** =====================================================================
  *  UPLOADS FILES
 =========================================================================*/

@@ -24,6 +24,10 @@ const uploadFiles = async(req, res = response) => {
         const type = req.params.type;
         const desc = req.params.desc;
         const wid = req.params.wid;
+        const tipo = req.params.tipo;
+        const parentesco = req.params.parentesco;
+        const numero = req.params.numero;
+        const beneficiario = req.params.beneficiario;
         const file = req.files.image;
 
         // VALIDAR ARCHIVOS
@@ -75,6 +79,10 @@ const uploadFiles = async(req, res = response) => {
                     attachment: nameFile,
                     type,
                     desc,
+                    tipo,
+                    parentesco,
+                    numero,
+                    beneficiario,
                     date: Date.now()
                 });
 
@@ -119,6 +127,10 @@ const uploadFiles = async(req, res = response) => {
                         attachment: nameFile,
                         type,
                         desc,
+                        tipo,
+                        parentesco,
+                        numero,
+                        beneficiario,
                         date: Date.now()
                     });
 
