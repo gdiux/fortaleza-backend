@@ -16,13 +16,14 @@ const sendMail = async(email, subject, html, msg) => {
     try {
 
         let transporter = nodemailer.createTransport({
+            pool: true,
             host: "smtpout.secureserver.net",
             port: 465,
             secure: true, // use TLS
             auth: {
                 user: "auxgestionhumana@grupofortalezasas.com",
                 pass: "Fortalezasas2022*",
-            }
+            },
         });
 
         const mailOptions = {
@@ -33,7 +34,7 @@ const sendMail = async(email, subject, html, msg) => {
         };
 
         // send mail with defined transport object
-        transporter.sendMail(mailOptions, async(error, info) => {
+        await transporter.sendMail(mailOptions, async(error, info) => {
             if (error) {
                 console.log(error);
                 return false;
