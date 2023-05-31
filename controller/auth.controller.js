@@ -189,8 +189,6 @@ const rePass = async(req, res = response) => {
 
         const send_mail = await sendMail(email, subject, html, msg);
 
-        console.log(send_mail);
-
         await workerDB.save();
 
         res.json({
