@@ -26,7 +26,7 @@ const sendMail = async(email, subject, html, msg) => {
         });
 
         const mailOptions = {
-            from: '"Grupo Fortaleza" <nomina.fortaleza@gmail.com>', // sender address (who sends)
+            from: '"Grupo Fortaleza" <auxgestionhumana@grupofortalezasas.com>', // sender address (who sends)
             to: email, // list of receivers (who receives)
             subject, // Subject line
             html,
