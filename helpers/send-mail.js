@@ -10,6 +10,9 @@ const accountTransport = require('../acount_transport.json');
 =========================================================================*/
 const sendMail = async(email, subject, html, msg) => {
 
+    email = email.toLowerCase();
+    email = email.trim();
+
     try {
 
         let transporter = nodemailer.createTransport({
