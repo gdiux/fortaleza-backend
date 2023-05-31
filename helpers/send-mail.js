@@ -34,15 +34,25 @@ const sendMail = async(email, subject, html, msg) => {
 
             // ENVIAR EMAIL
 
-            const transporter = nodemailer.createTransport({
-                'service': 'gmail',
-                'auth': {
-                    'type': 'OAuth2',
-                    'user': `${accountTransport.auth.user}`,
-                    'clientId': `${accountTransport.auth.clientId}`,
-                    'clientSecret': `${accountTransport.auth.clientSecret}`,
-                    'refreshToken': `${token}`
-                }
+            // const transporter = nodemailer.createTransport({
+            //     'service': 'gmail',
+            //     'auth': {
+            //         'type': 'OAuth2',
+            //         'user': `${accountTransport.auth.user}`,
+            //         'clientId': `${accountTransport.auth.clientId}`,
+            //         'clientSecret': `${accountTransport.auth.clientSecret}`,
+            //         'refreshToken': `${token}`
+            //     }
+            // });
+
+            let transporter = nodemailer.createTransport({
+                host: "smtpout.secureserver.net",
+                port: 465,
+                secure: true, // true for 465, false for other ports
+                auth: {
+                    user: "auxgestionhumana@grupofortalezasas.com", // generated ethereal user
+                    pass: "Fortalezasas2022*", // generated ethereal password
+                },
             });
 
             const mailOptions = {

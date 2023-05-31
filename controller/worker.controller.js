@@ -38,6 +38,7 @@ const createWorker = async(req, res = response) => {
         const worker = new Worker(req.body);
 
         worker.email = worker.email.toLowerCase();
+        worker.email = worker.email.trim();
 
         // ENCRYPTAR PASSWORD
         const salt = bcrypt.genSaltSync();
@@ -98,7 +99,7 @@ const createWorker = async(req, res = response) => {
                 </div>
                 </div>`;
 
-        // const send_mail = await sendMail(email, subject, html, msg);
+        const send_mail = await sendMail(email, subject, html, msg);
 
         const token = await generarWorkerJWT(worker._id);
 
