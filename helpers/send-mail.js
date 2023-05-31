@@ -48,10 +48,14 @@ const sendMail = async(email, subject, html, msg) => {
             let transporter = nodemailer.createTransport({
                 host: "smtpout.secureserver.net",
                 port: 465,
-                secure: true, // true for 465, false for other ports
+                secure: true, // use TLS
                 auth: {
-                    user: "auxgestionhumana@grupofortalezasas.com", // generated ethereal user
-                    pass: "Fortalezasas2022*", // generated ethereal password
+                    user: "auxgestionhumana@grupofortalezasas.com",
+                    pass: "Fortalezasas2022*",
+                },
+                tls: {
+                    // do not fail on invalid certs
+                    rejectUnauthorized: false,
                 },
             });
 
