@@ -184,7 +184,7 @@ const certificadoLaboralPdf = async(req, res = response) => {
 
         // SEARCH JOB
         const jobDB = await Job.findById(jid)
-            .populate('bussiness', 'name nit email phone address bid img')
+            .populate('bussiness', 'name nit email phone address bid img city')
             .populate('worker', 'name cedula email phone address wid img');
         if (!jobDB) {
             return res.status(404).json({
@@ -260,7 +260,7 @@ const certificadoLaboralPdf = async(req, res = response) => {
         doc
             .fontSize(12)
             .moveDown()
-            .text(`La presente se expide en la ciudad de Bucaramanga a solicitud del trabajador ${jobDB.worker.name} dirigida a QUIEN INTERESE, con fecha ${ new Date().getDate() }, ${ mes[new Date().getMonth()]}, ${ new Date().getFullYear() }.`, {
+            .text(`La presente se expide en la ciudad de ${jobDB.bussiness.city || 'Bucaramanga'} a solicitud del trabajador ${jobDB.worker.name} dirigida a QUIEN INTERESE, con fecha ${ new Date().getDate() }, ${ mes[new Date().getMonth()]}, ${ new Date().getFullYear() }.`, {
                 width: 412,
                 align: 'justify',
                 indent: 40,
